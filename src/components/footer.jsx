@@ -19,45 +19,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Important Links */}
-          <div>
-            <h4 className="text-white font-semibold mb-3">Important Links</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  href="#home"
-                  className="text-purple-300 hover:text-white transition-colors"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#about"
-                  className="text-purple-300 hover:text-white transition-colors"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#timeline"
-                  className="text-purple-300 hover:text-white transition-colors"
-                >
-                  Events
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#team"
-                  className="text-purple-300 hover:text-white transition-colors"
-                >
-                  Team
-                </a>
-              </li>
-            </ul>
-          </div>
-
           {/* Contact Us */}
           <div>
             <h4 className="text-white font-semibold mb-3">Contact Us</h4>

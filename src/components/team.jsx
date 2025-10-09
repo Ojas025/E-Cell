@@ -1,4 +1,3 @@
-// components/Team.jsx
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -32,8 +31,8 @@ const SocialLinks = ({ email, linkedin, size = "w-5 h-5" }) => (
 
 // TeamCard Component
 const TeamCard = ({ person }) => (
-  <div className="text-center flex flex-col items-center w-48">
-    <div className="w-60 h-60 mb-4 overflow-hidden rounded-2xl relative group bg-[#02020E] shadow-lg mx-auto">
+  <div className="text-center flex flex-col items-center w-full">
+    <div className="w-44 h-44 sm:w-52 sm:h-52 lg:w-60 lg:h-60 mb-3 sm:mb-4 overflow-hidden rounded-2xl relative group bg-[#02020E] shadow-lg mx-auto">
       <img
         src={person.image}
         alt={person.name}
@@ -41,10 +40,12 @@ const TeamCard = ({ person }) => (
       />
       <SocialLinks email={person.email} linkedin={person.linkedin} />
     </div>
-    <h4 className="text-lg font-semibold text-white font-enriqueta">
+    <h4 className="text-base sm:text-lg font-semibold text-white font-enriqueta px-2">
       {person.name}
     </h4>
-    <p className="mt-1 text-purple-300 font-enriqueta text-sm">{person.role}</p>
+    <p className="mt-1 text-purple-300 font-enriqueta text-xs sm:text-sm px-2">
+      {person.role}
+    </p>
   </div>
 );
 
@@ -114,7 +115,6 @@ const Team = () => {
     },
   ];
 
-  // Merge coordinators + all team members
   const allPeople = [
     ...coordinators,
     ...teamMembersByRole.flatMap((group) =>
@@ -123,35 +123,50 @@ const Team = () => {
   ];
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden" id="team">
+    <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden" id="team">
       <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4 font-enriqueta">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3 sm:mb-4 font-enriqueta">
             Our Team
           </h2>
-          <p className="text-xl text-purple-200 max-w-3xl mx-auto mb-8 font-enriqueta">
+          <p className="text-base sm:text-xl text-purple-200 max-w-3xl mx-auto mb-6 sm:mb-8 font-enriqueta px-4">
             Contact us for any queries or ideas.
           </p>
         </div>
 
-        {/* Unified carousel */}
         <Swiper
           modules={[Autoplay]}
-          slidesPerView={4}
-          spaceBetween={20}
+          slidesPerView={1.2}
+          spaceBetween={15}
           loop={true}
-          loopFillGroupWithBlank={true}
-          centeredSlides={false}
+          centeredSlides={true}
           autoplay={{ delay: 2500, disableOnInteraction: false }}
           breakpoints={{
-            640: { slidesPerView: 2 },
-            768: { slidesPerView: 3 }, 
-            1024: { slidesPerView: 4 },
+            480: { 
+              slidesPerView: 1,
+              spaceBetween: 15,
+              centeredSlides: true
+            },
+            640: { 
+              slidesPerView: 2,
+              spaceBetween: 20,
+              centeredSlides: false
+            },
+            768: { 
+              slidesPerView: 3,
+              spaceBetween: 20,
+              centeredSlides: false
+            }, 
+            1024: { 
+              slidesPerView: 4,
+              spaceBetween: 20,
+              centeredSlides: false
+            },
           }}
-          className="mx-auto max-w-6xl"
+          className="mx-auto max-w-6xl !px-4 sm:!px-0"
         >
           {allPeople.map((p) => (
-            <SwiperSlide key={p.id} className="flex justify-center">
+            <SwiperSlide key={p.id} className="flex justify-center !h-auto">
               <TeamCard person={p} />
             </SwiperSlide>
           ))}
