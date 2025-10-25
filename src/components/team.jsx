@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
+import { AdminDataContext } from "../context/AdminDataContext";
 
 // SocialLinks Component
 const SocialLinks = ({ email, linkedin, size = "w-5 h-5" }) => (
@@ -34,7 +35,7 @@ const TeamCard = ({ person }) => (
   <div className="text-center flex flex-col items-center w-full">
     <div className="w-44 h-44 sm:w-52 sm:h-52 lg:w-60 lg:h-60 mb-3 sm:mb-4 overflow-hidden rounded-2xl relative group bg-[#02020E] shadow-lg mx-auto">
       <img
-        src={person.image}
+        src={person.secure_url || person.image} // use uploaded image if exists
         alt={person.name}
         className="w-full h-full object-cover scale-105 transition-transform duration-300 group-hover:scale-110"
       />
@@ -51,76 +52,36 @@ const TeamCard = ({ person }) => (
 
 // Main Team Component
 const Team = () => {
-  // Coordinators
-  const coordinators = [
-    { id: 1, name: "Pratham Amritkar", role: "Overall Coordinator", image: "team/pratham.png", email: "pratham@ecell.com", linkedin: "https://linkedin.com/in/pratham" },
-    { id: 2, name: "Sanket Lohakare", role: "Overall Coordinator", image: "team/sanket.png", email: "sanket@ecell.com", linkedin: "https://linkedin.com/in/sanket" },
-  ];
+  const { team, loading, fetchAll } = useContext(AdminDataContext);
+  const [teamData, setTeamData] = useState([]);
 
-  // Teams
-  const teamMembersByRole = [
-    {
-      role: "Corporate Relations",
-      members: [
-        { id: 3, name: "Harshalee Malu", image: "team/harshalee.jpg", email: "harshaleemalu03@gmail.com", linkedin: "https://www.linkedin.com/in/harshalee-malu" },
-        { id: 4, name: "Triveni Jadhav", image: "team/triveni.jpg", email: "tj8726@gmail.com", linkedin: "https://www.linkedin.com/in/triveni-jadhav-566725293" },
-        { id: 5, name: "Bhakti Ghadage", image: "team/bhakti.jpg", email: "bhaktighadage8@gmail.com", linkedin: "https://www.linkedin.com/in/bhakti-ghadage-099279306" },
-      ],
-    },
-    {
-      role: "Design & Branding",
-      members: [
-        { id: 6, name: "Piyush Bodele", image: "team/piyush.png", email: "piyush@ecell.com", linkedin: "https://linkedin.com/in/piyush" },
-        { id: 7, name: "Swaraj Ambawade", image: "team/swaraj.png", email: "swaraj@ecell.com", linkedin: "https://linkedin.com/in/swaraj" },
-        { id: 8, name: "Maheshwari Gaikwad", image: "team/maheshwari.jpg", email: "maheshwari@ecell.com", linkedin: "https://linkedin.com/in/maheshwari" },
-      ],
-    },
-    {
-      role: "Events & PR",
-      members: [
-        { id: 9, name: "Roshani Jadhav", image: "team/roshani.jpg", email: "roshanij209@gmail.com", linkedin: "https://www.linkedin.com/in/roshani-jadhav-879a8a317 " },
-        { id: 10, name: "Srushti Holkar", image: "team/srushti.jpg", email: "holkarsrushti1@gmail.com", linkedin: "https://www.linkedin.com/in/srushti-holkar-1884602b3 " },
-        { id: 11, name: "Neel Doshi", image: "team/neel_doshi.png", email: "neel@ecell.com", linkedin: "https://linkedin.com/in/neel" },
-        { id: 12, name: "Indranil Jadhav", image: "team/indranil_jadhav.png", email: "indranil@ecell.com", linkedin: "https://linkedin.com/in/indranil" },
-      ],
-    },
-    {
-      role: "Hospitality & PR",
-      members: [
-        { id: 13, name: "Yash Bhati", image: "team/yash_bhati.png", email: "yash@ecell.com", linkedin: "https://linkedin.com/in/yash" },
-        { id: 14, name: "Megh Gaidhani", image: "team/megh.png", email: "megh@ecell.com", linkedin: "https://linkedin.com/in/megh" },
-      ],
-    },
-    {
-      role: "Media & Marketing",
-      members: [
-        { id: 15, name: "Ajay Bodkhe", image: "team/ajay.png", email: "ajay@ecell.com", linkedin: "" },
-        { id: 16, name: "Balaji Alli", image: "team/balaji.png", email: "balaji@ecell.com", linkedin: "https://linkedin.com/in/balaji" },
-      ],
-    },
-    {
-      role: "Research & Analysis",
-      members: [
-        { id: 17, name: "Yash Bhalodiya", image: "team/yash_bhalodiya.png", email: "yashb@ecell.com", linkedin: "https://linkedin.com/in/yashb" },
-        { id: 18, name: "Farhan Ansari", image: "team/farhan.png", email: "farhan@ecell.com", linkedin: "https://linkedin.com/in/farhan" },
-      ],
-    },
-    {
-      role: "Web & Tech",
-      members: [
-        { id: 19, name: "Ojas Deshpande", image: "team/ojas.png", email: "ojasd025@gmail.com", linkedin: "https://www.linkedin.com/in/deshpande-ojas/" },
-        { id: 20, name: "Samidha Dhawale", image: "team/samidha.jpg", email: "samidhadd21@gmail.com", linkedin: "https://www.linkedin.com/in/samidha-dhawale-4713b9286/" },
-        { id: 21, name: "Sahil Agarwal", image: "team/sahil.png", email: "sahil@ecell.com", linkedin: "https://linkedin.com/in/sahil" },
-      ],
-    },
-  ];
+  // Fetch team on mount
+  useEffect(() => {
+    fetchAll(); // make sure context data is loaded
+  }, []);
 
-  const allPeople = [
-    ...coordinators,
-    ...teamMembersByRole.flatMap((group) =>
-      group.members.map((m) => ({ ...m, role: group.role }))
-    ),
-  ];
+  // Update local state when context team changes
+  useEffect(() => {
+  if (team?.length) {
+    // Sort by role alphabetically or based on custom priority
+    const sorted = [...team].sort((a, b) => {
+      const rolePriority = {
+        "Overall Coordinator": 1,
+        "Corporate Relations": 2,
+        "Design & Branding": 3,
+        "Events & PR": 4,
+        "Hospitality & PR": 5,
+        "Media & Marketing": 6,
+        "Research & Analysis": 7,
+        "Web & Tech": 8,
+      };
+      // fallback to alphabetical if role not found
+      return (rolePriority[a.role] || 99) - (rolePriority[b.role] || 99);
+    });
+
+    setTeamData(sorted);
+  }
+}, [team]);
 
   return (
     <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden" id="team">
@@ -134,43 +95,31 @@ const Team = () => {
           </p>
         </div>
 
-        <Swiper
-          modules={[Autoplay]}
-          slidesPerView={1.2}
-          spaceBetween={15}
-          loop={true}
-          centeredSlides={true}
-          autoplay={{ delay: 2500, disableOnInteraction: false }}
-          breakpoints={{
-            480: { 
-              slidesPerView: 1,
-              spaceBetween: 15,
-              centeredSlides: true
-            },
-            640: { 
-              slidesPerView: 2,
-              spaceBetween: 20,
-              centeredSlides: false
-            },
-            768: { 
-              slidesPerView: 3,
-              spaceBetween: 20,
-              centeredSlides: false
-            }, 
-            1024: { 
-              slidesPerView: 4,
-              spaceBetween: 20,
-              centeredSlides: false
-            },
-          }}
-          className="mx-auto max-w-6xl !px-4 sm:!px-0"
-        >
-          {allPeople.map((p) => (
-            <SwiperSlide key={p.id} className="flex justify-center !h-auto">
-              <TeamCard person={p} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        {loading ? (
+          <p className="text-center text-white">Loading team...</p>
+        ) : (
+          <Swiper
+            modules={[Autoplay]}
+            slidesPerView={1.2}
+            spaceBetween={15}
+            loop={true}
+            centeredSlides={true}
+            autoplay={{ delay: 2500, disableOnInteraction: false }}
+            breakpoints={{
+              480: { slidesPerView: 1, spaceBetween: 15, centeredSlides: true },
+              640: { slidesPerView: 2, spaceBetween: 20, centeredSlides: false },
+              768: { slidesPerView: 3, spaceBetween: 20, centeredSlides: false },
+              1024: { slidesPerView: 4, spaceBetween: 20, centeredSlides: false },
+            }}
+            className="mx-auto max-w-6xl !px-4 sm:!px-0"
+          >
+            {teamData.map((person) => (
+              <SwiperSlide key={person.id} className="flex justify-center !h-auto">
+                <TeamCard person={person} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </section>
   );

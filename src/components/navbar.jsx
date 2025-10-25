@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { UserAuth } from "../context/AuthContext";
+import { NavLink } from "react-router";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAdminWindowOpen, setIsAdminWindowOpen] = useState(true);
+  const {session} = UserAuth();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -15,8 +19,25 @@ const Navbar = () => {
   };
 
   return (
+    <div>
+      {session && isAdminWindowOpen && (
+  <div className="w-full flex flex-col sm:flex-row items-center sm:items-center gap-2 sm:gap-0 px-4 py-2 bg-slate-700 text-sky-300 font-semibold">
+    <p className="text-center font-sans w-full sm:w-auto">
+      You have Admin Access
+    </p>
+    <NavLink
+      to={"/admin/dashboard"}
+      className="sm:ml-auto bg-slate-900 px-3 py-1 rounded-sm cursor-pointer text-sm sm:text-base hover:bg-slate-800 transition-colors w-full sm:w-auto text-center"
+    >
+      Admin Dashboard
+    </NavLink>
+    <div onClick={() => setIsAdminWindowOpen(false)} className="ml-4 text-xl my-auto cursor-pointer select-none">x</div>
+  </div>
+)}
+
+
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`w-full z-[9999] transition-all duration-300 ${
         isScrolled
           ? "bg-[#02020E]/90 backdrop-blur-md py-2 shadow-lg"
           : "bg-transparent py-4"
@@ -39,6 +60,7 @@ const Navbar = () => {
           <a href="#home" className="text-white hover:text-purple-300 transition-colors font-enriqueta">Home</a>
           <a href="#about" className="text-white hover:text-purple-300 transition-colors font-enriqueta">About</a>
           <a href="#timeline" className="text-white hover:text-purple-300 transition-colors font-enriqueta">Events</a>
+          <a href="#gallery" className="text-white hover:text-purple-300 transition-colors font-enriqueta">Gallery</a>
           <a href="#team" className="text-white hover:text-purple-300 transition-colors font-enriqueta">Team</a>
           <a href="#contact" className="text-white hover:text-purple-300 transition-colors font-enriqueta">Contact Us</a>
         </div>
@@ -68,7 +90,7 @@ const Navbar = () => {
         className={`md:hidden fixed top-0 left-0 w-full h-screen bg-gradient-to-br from-[#02020E] to-purple-900/20 backdrop-blur-lg z-40 flex flex-col justify-center items-center space-y-8 py-20 px-6 transition-all duration-500 ${
           isMobileMenuOpen 
             ? "opacity-100 visible translate-x-0" 
-            : "opacity-0 invisible -translate-x-full"
+            : "opacity-0 invisible -translate-x-full pointer-events-none z-0"
         }`}
       >
         <button
@@ -127,6 +149,7 @@ const Navbar = () => {
         />
       )}
     </nav>
+    </div>
   );
 };
 

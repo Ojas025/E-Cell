@@ -1,17 +1,19 @@
 // pages/Home.jsx
-import React from "react";
 import Navbar from "../components/navbar";
 import Hero from "../components/hero";
 import AboutUs from "../components/aboutUs";
 import Timeline from "../components/timeline";
 import Team from "../components/team";
 import Footer from "../components/footer";
+import Gallery from "../components/Gallery";
+import { UserAuth } from "../context/AuthContext";
 
 const Home = () => {
   return (
     <div className="relative min-h-screen bg-[#02020E] overflow-hidden">
+
       {/* Background blobs */}
-      <div className="absolute inset-0 -z-0">
+      <div className="absolute inset-0 -z-10">
         {/* Purple blobs */}
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-600 rounded-full blur-[180px] opacity-40 animate-float-slow"></div>
         <div className="absolute bottom-[15%] right-[5%] w-[400px] h-[400px] bg-purple-500 rounded-full blur-[160px] opacity-35 animate-float"></div>
@@ -60,6 +62,7 @@ const Home = () => {
       <Hero />
       <AboutUs />
       <Timeline />
+      <Gallery />
       <Team />
       <Footer />
     </div>

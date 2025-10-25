@@ -1,2 +1,52 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-page: #d3d1d1;
+  --color-dark: #02020E;
+  --color-mid: #492DAA;
+  --color-light: #9C7CE3;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    /* transform: translateX(-400px); */
+    scale: 0.5;
+  }
+  to {
+    /* transform: translateX(0px); */
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+.event {
+  animation: appear linear;
+  animation-timeline: view();
+  animation-range: entry 0; 
+}
+
+.image {
+  animation: appear linear;
+  animation-timeline: view();
+  animation-range: entry 0;  
+}
+
+@keyframes enlarge {
+  from {
+    width: 0%;
+  }
+  to {
+    width: max-content;
+  }
+}
+
+.heading {
+  animation: enlarge linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
