@@ -13,11 +13,6 @@ It includes both the public site and an **admin dashboard** for managing events,
 4. [Environment Variables](#environment-variables)
 5. [Installation](#installation)
 6. [Running the Development Server](#running-the-development-server)
-7. [Building for Production](#building-for-production)
-8. [Deployment](#deployment)
-9. [Admin Dashboard](#admin-dashboard)
-10. [Best Practices](#best-practices)
-11. [License](#license)
 
 ---
 
